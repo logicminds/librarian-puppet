@@ -11,9 +11,37 @@ module Librarian
             reference = "#{remote}/#{reference}"
           end
 
-          command = %W(rev-parse #{reference}^{commit} --quiet)
+          command = %W(rev-parse #{reference}^{commit})
           run!(command, :chdir => true).strip
         end
+
+        def clone!(repository_url)
+          command = %W(clone #{repository_url} .)
+          run!(command, :chdir => true)
+        end
+
+        def checkout!(reference, options ={ })
+          command = %W(checkout #{reference})
+          command << "--force" if options[:force]
+          run!(command, :chdir => true)
+        end
+
+        def fetch!(remote, options = { })
+          command = %W(fetch #{remote})
+          command << "--tags" if options[:tags]
+          run!(command, :chdir => true)
+        end
+
+        def reset_hard!
+          command = %W(reset --hard)
+          run!(command, :chdir => true)
+        end
+
+        def current_commit_hash
+          command = %W(rev-parse HEAD)
+          run!(command, :chdir => true).strip!
+        end
+
       end
     end
   end
