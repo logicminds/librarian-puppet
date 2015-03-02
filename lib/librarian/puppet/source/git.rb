@@ -12,34 +12,45 @@ module Librarian
           end
 
           command = %W(rev-parse #{reference}^{commit})
-          run!(command, :chdir => true).strip
+          out = run!(command, :chdir => true).strip
+          debug { "GIT #{command} => #{out}" }
+          out
         end
 
         def clone!(repository_url)
           command = %W(clone #{repository_url} .)
-          run!(command, :chdir => true)
+          out = run!(command, :chdir => true)
+          debug { "GIT #{command} => #{out}" }
         end
 
         def checkout!(reference, options ={ })
           command = %W(checkout #{reference})
           command << "--force" if options[:force]
-          run!(command, :chdir => true)
+          out = run!(command, :chdir => true)
+          debug { "GIT #{command} => #{out}" }
+          out
         end
 
         def fetch!(remote, options = { })
           command = %W(fetch #{remote})
           command << "--tags" if options[:tags]
-          run!(command, :chdir => true)
+          out = run!(command, :chdir => true)
+          debug { "GIT #{command} => #{out}" }
+          out
         end
 
         def reset_hard!
           command = %W(reset --hard)
-          run!(command, :chdir => true)
+          out = run!(command, :chdir => true)
+          debug { "GIT #{command} => #{out}" }
+          out
         end
 
         def current_commit_hash
           command = %W(rev-parse HEAD)
-          run!(command, :chdir => true).strip!
+          out = run!(command, :chdir => true).strip!
+          debug { "GIT #{command} => #{out}" }
+          out
         end
 
       end
