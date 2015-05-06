@@ -84,6 +84,11 @@ module Librarian
         def evaluate_modulefile(modulefile)
           @@require_puppet ||= require_puppet
 
+          # Puppet 4 does not have the class
+          unless Object.const_defined?('::Puppet::ModuleTool::ModulefileReader')
+            raise Error, "Can't parse Modulefile in Puppet >= 4.0 and you are using #{Librarian::Puppet::puppet_version}"
+          end
+
           metadata = ::Puppet::ModuleTool::Metadata.new
           begin
             ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
