@@ -13,10 +13,9 @@ Cucumber::Rake::Task.new(:features) do |t|
   require 'puppet'
   puppet_version = Puppet::version.gsub("~>","").split(".").first.to_i
   tags = (2..4).select {|i| i != puppet_version}.map{|i| "--tags @puppet#{puppet_version},~@puppet#{i}"}
-  opts = tags.join(" ")
   # don't run githubtarball scenarios in Travis, they easily fail with rate limit exceeded
-  opts += "--tags ~@github" if ENV['TRAVIS']=='true'
-  t.cucumber_opts = opts
+  tags << "--tags ~@github" if ENV['TRAVIS']=='true'
+  t.cucumber_opts = tags.join(" ")
 end
 
 Rake::TestTask.new do |test|
