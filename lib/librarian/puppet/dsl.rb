@@ -42,7 +42,7 @@ module Librarian
 
         # save the specfile and call librarian
         def run(specfile = nil)
-          @working_path = specfile.kind_of?(Pathname) ? specfile.parent : Pathname.new(Dir.pwd)
+          @working_path = specfile.kind_of?(Pathname) ? specfile.parent : Pathname(Dir.pwd)
           @specfile = specfile
           super
         end
